@@ -26,9 +26,9 @@ async function scrapeGeolocation(ip) {
 async function simulateClickAndGetData(ip) {
     const browser = await puppeteer.launch({
         executablePath: await chromium.executablePath,
-        // args: chromium.args,
-        // defaultViewport: chromium.defaultViewport,
+        args: chromium.args,
         headless: chromium.headless,
+        defaultViewport: chromium.defaultViewport,
     });
     const page = await browser.newPage();
     try {
