@@ -1,13 +1,10 @@
+const express = require("express");
 const chromium = require('chrome-aws-lambda');
 const puppeteer = require('puppeteer-core');
-const express = require("express");
-const cheerio = require('cheerio');
-const cors = require("cors");
 const app = express();
-
+// const cheerio = require('cheerio');
 
 app.use(express.json());
-app.use(cors());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
