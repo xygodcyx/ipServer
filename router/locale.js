@@ -1,9 +1,7 @@
-// const puppeteer = require("puppeteer");
+const puppeteer = require("puppeteer");
 // const chromium = require("chrome-aws-lambda");
 const router = require("express").Router()
-const chrome = require('@sparticuz/chromium');
-const puppeteer = require('puppeteer-core');
-const production = process.env.NODE_ENV === 'production';
+// const production = process.env.NODE_ENV === 'production';
 
 router.get("/", async (req, res) => {
     const {ip} = req.query;
@@ -45,18 +43,7 @@ async function simulateClickAndGetData(ip) {
     //     defaultViewport: chromium.defaultViewport,
     // });
     // const browser = await puppeteer.connect({browserWSEndpoint: 'wss://chrome.browserless.io?token=YOUR_TOKEN_HERE'})
-    const browser = await puppeteer.launch(
-        production ? {
-            args: chrome.args,
-            defaultViewport: chrome.defaultViewport,
-            executablePath: await chrome.executablePath(),
-            headless: 'new',
-            ignoreHTTPSErrors: true
-        } : {
-            headless: 'new',
-            executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
-        }
-    );
+    const browser = await puppeteer.launch();
     const page = await browser.newPage();
     try {
         // Navigate to the page
@@ -83,7 +70,7 @@ async function simulateClickAndGetData(ip) {
         throw error;  // Throw error if something goes wrong
     } finally {
         // Don't close the browser here, leave it open for further requests
-        // await page.close();
+        await browser.close();
     }
 }
 
