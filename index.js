@@ -5,33 +5,6 @@ const path = require("path");
 const app = express();
 // const cheerio = require('cheerio');
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json());
-
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    if (req.method === 'OPTIONS') {
-        return res.sendStatus(200);  // 发送 200 响应表示允许预检请求
-    }
-    next();
-});
-
-app.get("/", async (req, res) => {
-    const {ip} = req.query;
-    try {
-        const locale = await scrapeGeolocation(ip);
-        console.log(`获取成功：ip为${ip}的用户位于${locale.slice(0, -4)}`)
-        res.send({
-            data: locale
-        });
-    } catch (error) {
-        console.error("Error fetching:", error.message);
-        res.status(500).send({error: "Failed to fetch."});
-    }
-});
-
 // Geolocation scraping function
 async function scrapeGeolocation(ip) {
     try {
@@ -86,8 +59,34 @@ async function simulateClickAndGetData(ip) {
         // await page.close();
     }
 }
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json());
 
-// Test the function with the provided IP (Uncomment for testing)
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', '*');
+    res.header('Access-Control-Allow-Headers', '*');
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200);  // 发送 200 响应表示允许预检请求
+    }
+    next();
+});
+
+app.get("/:ip", async (req, res) => {
+    const {ip} = req.params;
+    try {
+        const locale = await scrapeGeolocation(ip);
+        console.log(`获取成功：ip为${ip}的用户位于${locale.slice(0, -4)}`)
+        res.send({
+            data: locale
+        });
+    } catch (error) {
+        console.error("Error fetching:", error.message);
+        res.status(500).send({error: "Failed to fetch."});
+    }
+});
+
+
 // await scrapeGeolocation('3.113.23.210');
 
 // Start the express server
