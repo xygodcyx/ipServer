@@ -11,5 +11,11 @@
       "src": "/(.*)",
       "dest": "./index.cjs"
     }
-  ]
+  ],
+  "functions": {
+    "/*": {
+      "runtime": "nodejs18.x",
+      "memory": 1024
+    }
+  }
 }
