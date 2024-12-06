@@ -9,8 +9,8 @@
     app.use(express.json());
     app.use(cors());
 
-    app.get("/locale/", async (req, res) => {
-        const {ip} = req.query;
+    app.get("/:ip", async (req, res) => {
+        const {ip} = req.params;
         try {
             const browser = await puppeteer.launch({headless: true});  // 启动浏览器实例
             const locale = await scrapeGeolocation(ip);
