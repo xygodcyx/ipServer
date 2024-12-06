@@ -1,6 +1,9 @@
-const puppeteer = require("puppeteer");
-const chromium = require("chrome-aws-lambda");
+// const puppeteer = require("puppeteer");
+// const chromium = require("chrome-aws-lambda");
 const router = require("express").Router()
+const chrome = require('@sparticuz/chromium');
+const puppeteer = require('puppeteer-core');
+const production = process.env.NODE_ENV === 'production';
 
 router.get("/", async (req, res) => {
     const {ip} = req.query;
@@ -35,12 +38,25 @@ async function scrapeGeolocation(ip) {
 
 // Simulate clicking and extracting geolocation data
 async function simulateClickAndGetData(ip) {
-    const browser = await puppeteer.launch({
-        executablePath: await chromium.executablePath,
-        args: chromium.args,
-        headless: chromium.headless,
-        defaultViewport: chromium.defaultViewport,
-    });
+    // const browser = await puppeteer.launch({
+    //     executablePath: await chromium.executablePath,
+    //     args: chromium.args,
+    //     headless: chromium.headless,
+    //     defaultViewport: chromium.defaultViewport,
+    // });
+    // const browser = await puppeteer.connect({browserWSEndpoint: 'wss://chrome.browserless.io?token=YOUR_TOKEN_HERE'})
+    const browser = await puppeteer.launch(
+        production ? {
+            args: chrome.args,
+            defaultViewport: chrome.defaultViewport,
+            executablePath: await chrome.executablePath(),
+            headless: 'new',
+            ignoreHTTPSErrors: true
+        } : {
+            headless: 'new',
+            executablePath: 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'
+        }
+    );
     const page = await browser.newPage();
     try {
         // Navigate to the page
