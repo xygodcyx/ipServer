@@ -1,6 +1,6 @@
 const express = require("express");
 const chromium = require('chrome-aws-lambda');
-const puppeteer = require('puppeteer-core');
+const puppeteer = require('puppeteer');
 const path = require("path");
 const app = express();
 // const cheerio = require('cheerio');
@@ -17,7 +17,6 @@ app.use((req, res, next) => {
     }
     next();
 });
-
 
 app.get("/", async (req, res) => {
     const {ip} = req.query;
@@ -53,9 +52,9 @@ async function scrapeGeolocation(ip) {
 // Simulate clicking and extracting geolocation data
 async function simulateClickAndGetData(ip) {
     const browser = await puppeteer.launch({
-        executablePath: process.env.CHROME_EXECUTABLE_PATH || await chromium.executablePath,
-        args: chromium.args,
-        defaultViewport: chromium.defaultViewport,
+        executablePath: await chromium.executablePath,
+        // args: chromium.args,
+        // defaultViewport: chromium.defaultViewport,
         headless: chromium.headless,
     });
     const page = await browser.newPage();
