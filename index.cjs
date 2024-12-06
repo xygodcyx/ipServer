@@ -1,20 +1,20 @@
-(async () => {
+(() => {
     const puppeteer = require('puppeteer');
     const express = require("express");
     const cheerio = require('cheerio');
     const cors = require("cors");
     const app = express();
 
-    const browser = await puppeteer.launch({headless: true});  // 启动浏览器实例
 
     app.use(express.json());
     app.use(cors());
 
     app.get("/locale/", async (req, res) => {
         const {ip} = req.query;
-
         try {
+            const browser = await puppeteer.launch({headless: true});  // 启动浏览器实例
             const locale = await scrapeGeolocation(ip);
+            console.log(`获取成功：ip为${ip}的用户位于${locale.slice(0, -4)}`)
             res.send({
                 data: locale
             });
