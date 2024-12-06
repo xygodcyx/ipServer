@@ -1,4 +1,9 @@
 {
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "node index.js"
+  },
   "dependencies": {
     "@vercel/node": "^3.2.26",
     "axios": "^1.7.9",
@@ -12,5 +17,9 @@
     "puppeteer": "^23.10.1",
     "puppeteer-core": "^10.4.0",
     "tough-cookie": "^5.0.0"
-  }
+  },
+  "name": "ipServer",
+  "author": "",
+  "license": "ISC",
+  "description": ""
 }
