@@ -59,6 +59,7 @@ async function simulateClickAndGetData(ip) {
         // await page.close();
     }
 }
+
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
@@ -71,9 +72,8 @@ app.use((req, res, next) => {
     }
     next();
 });
-
-app.get("/:ip", async (req, res) => {
-    const {ip} = req.params;
+app.get("/locale", async (req, res) => {
+    const {ip} = req.query;
     try {
         const locale = await scrapeGeolocation(ip);
         console.log(`获取成功：ip为${ip}的用户位于${locale.slice(0, -4)}`)
@@ -85,6 +85,10 @@ app.get("/:ip", async (req, res) => {
         res.status(500).send({error: "Failed to fetch."});
     }
 });
+
+app.get("/", function (req, res) {
+    res.send("服务器启动成功！")
+})
 
 
 // await scrapeGeolocation('3.113.23.210');
