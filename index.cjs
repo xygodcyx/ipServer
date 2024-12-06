@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 
-app.get("/locale", async (req, res) => {
+app.get("/", async (req, res) => {
     const {ip} = req.query;
     try {
         const locale = await scrapeGeolocation(ip);
