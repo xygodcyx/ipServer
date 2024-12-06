@@ -2,17 +2,12 @@ const express = require("express");
 const chromium = require('chrome-aws-lambda');
 const puppeteer = require('puppeteer-core');
 const path = require("path");
-const cors = require("cors")
 const app = express();
 // const cheerio = require('cheerio');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
-app.use(cors({
-    origin: '*', // 允许所有来源跨域访问，可以改为特定的域名如 'https://ip.quhou'
-    methods: ['GET', 'POST'], // 允许的 HTTP 方法
-    allowedHeaders: ['*'] // 允许的请求头
-}));
+
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
